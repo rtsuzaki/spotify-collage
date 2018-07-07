@@ -1,0 +1,49 @@
+{
+  "name": "spotify-collage",
+  "version": "1.0.0",
+  "description": "Web application which creates collage using the album art from a user's spotify playlist.",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build | npm run start-dev",
+    "start-dev": "nodemon ./server/index.js",
+    "build": "webpack -d --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rtsuzaki/spotify-collage.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rtsuzaki/spotify-collage/issues"
+  },
+  "homepage": "https://github.com/rtsuzaki/spotify-collage#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.5",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^1.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.1",
+    "nodemon": "^1.17.5",
+    "webpack": "^4.15.1",
+    "webpack-cli": "^3.0.8"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
+  }
+}
