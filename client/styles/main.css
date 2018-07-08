@@ -340,7 +340,26 @@ template {
   display: none;
 }
 
-#app {
-  color: red;
-  font-weight: bold;
+#userGreeting {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+#mosaicContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+#trackTableAndMosaicContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-content: flex-start;
 }
