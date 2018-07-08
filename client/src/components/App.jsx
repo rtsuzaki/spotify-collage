@@ -4,6 +4,7 @@ import UserGreeting from './UserGreeting.jsx';
 import AlbumArtMosaic from './AlbumArtMosaic.jsx';
 import TrackTable from './TrackTable.jsx';
 import BarChart from './BarChart';
+import PieChart from './PieChart';
 import "../../styles/main.css";
 
 const spotifyApi = new SpotifyWebApi();
@@ -135,7 +136,7 @@ class App extends React.Component{
       return (
         <div>
           <UserGreeting currentUser={this.state.currentUser}/>
-
+          <a href='http://localhost:8888'> Login to Spotify </a>
           <div id="trackTableAndMosaicContainer">
             <div className="vertical-align-container">
               <TrackTable currentTracks={this.state.currentTracks}/>
@@ -162,10 +163,11 @@ class App extends React.Component{
                 <BarChart currentTracksData={this.state.currentTracksData} dataType="acousticness"/>
                 <BarChart currentTracksData={this.state.currentTracksData} dataType="instrumentalness"/>
                 <BarChart currentTracksData={this.state.currentTracksData} dataType="valence"/>
+                <BarChart currentTracksData={this.state.currentTracksData} dataType="speechiness"/>
+                <PieChart currentTracksData={this.state.currentTracksData}/>
               </div>
             </div>
           </div>  
-          <a href='http://localhost:8888'> Login to Spotify </a>
         </div>
       );
     } else {

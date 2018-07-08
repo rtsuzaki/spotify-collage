@@ -1,9 +1,6 @@
 import React from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLabel } from 'victory';
 
-
-
-
 class BarChart extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +10,6 @@ class BarChart extends React.Component {
     }
 
   }
-  
   componentDidMount() {
     this.setBarChartData();
   }
@@ -54,7 +50,7 @@ class BarChart extends React.Component {
     }
 
     return (
-      <VictoryChart domainPadding={20} theme={VictoryTheme.material} style={{ parent: { maxWidth: "20%" } }}>
+      <VictoryChart domainPadding={20} theme={VictoryTheme.material} style={{ parent: { maxWidth: "33%" } }}>
         <VictoryAxis
           tickValues={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
           tickFormat={['0', '10', '20', '30', '40', '50', '60', '70', '80', '90' ,'100']}
@@ -68,7 +64,7 @@ class BarChart extends React.Component {
         <VictoryLabel text={`${this.props.dataType} Rating`} x={175} y={340} textAnchor="middle"/>
 
         {/* Chart label for average value, cutting off excess decimal places */}
-        <VictoryLabel text={`Average ${this.props.dataType}=${(this.state.total/this.props.currentTracksData.length).toFixed(2)}`} x={175} y={10} textAnchor="middle"/>
+        <VictoryLabel text={`Average ${this.props.dataType}=${(this.state.total/this.props.currentTracksData.length).toFixed(2)}`} x={175} y={50} textAnchor="middle"/>
         
         <VictoryBar
           data={data}
@@ -76,7 +72,6 @@ class BarChart extends React.Component {
           y="NumberOfSongs"
         />
       </VictoryChart>
-
     )
   } 
 }

@@ -388,3 +388,7 @@ th,td {
   border-bottom: 1px solid #ddd;
   padding: 5px;
 }
+
+#victoryPieContainer {
+  width:33%;
+}
