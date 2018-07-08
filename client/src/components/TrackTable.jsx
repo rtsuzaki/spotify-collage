@@ -3,13 +3,17 @@ import TrackTableEntry from './TrackTableEntry.jsx';
 
 const TrackTable = (props) => {
   return (
-    <div >
-      <tr>
-        <th>Songs</th>
-        <th>Artists</th>
-      </tr>
-      {props.currentTracks.map((track) => <TrackTableEntry track={track}/>)}
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Songs</th>
+          <th>Artists</th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.currentTracks.map((track, index) => <TrackTableEntry key={index} track={track}/>)}
+      </tbody>
+    </table>
   )
 }
 

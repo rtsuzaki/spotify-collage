@@ -13,11 +13,9 @@ const AlbumArtMosaic = (props) => {
       }
   });
   // if (props.currentlySelectedPlaylist.items) {
-    console.log('playlistItems', props.currentlySelectedPlaylist.items)
-    console.log('ALBUMS', Object.keys(albums))
     return (
       <div id="mosaicContainer">
-        {Object.keys(albums).map((albumId) => <MosaicEntry albumEntry={albums[albumId]}/>)}
+        {Object.keys(albums).map((albumId, index) => <MosaicEntry albumEntry={albums[albumId]} key={index}/>)}
       </div>
     )
   // }

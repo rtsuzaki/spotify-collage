@@ -1,11 +1,10 @@
 import React from "react";
 import SpotifyWebApi from 'spotify-web-api-js';
-import "../../styles/main.css";
 import UserGreeting from './UserGreeting.jsx';
 import AlbumArtMosaic from './AlbumArtMosaic.jsx';
 import TrackTable from './TrackTable.jsx';
-import DanceabilityChart from './DanceabilityChart.jsx';
-import ChartsContainer from "./ChartsContainer";
+import BarChart from './BarChart';
+import "../../styles/main.css";
 
 const spotifyApi = new SpotifyWebApi();
 
@@ -21,12 +20,14 @@ class App extends React.Component{
       loggedIn: token ? true : false,
       currentlySelectedPlaylist: {items:[]},
       currentTracks: [],
+      currentTracksData: [],
       currentUser: {},
       topTracks: {},
       playlists: {},
       nowPlaying: { name: 'Not Checked', albumArt: '' }
     };
   }
+
   componentDidMount() {
     this.getCurrentUser()
     .then((userId)=> {
@@ -36,10 +37,10 @@ class App extends React.Component{
       return this.getMyTopTracks();
     })
     .then((topTracks) => {
-      this.setState({currentlySelectedPlaylist: topTracks}, this.setAllCurrentBasedOnPlaylist(this.state.currentlySelectedPlaylist))
+      this.setState({currentlySelectedPlaylist: topTracks}, () => {this.setAllCurrentBasedOnPlaylist(this.state.currentlySelectedPlaylist)})
     });
   }
-    
+
   getHashParams() {
     var hashParams = {};
     var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -103,7 +104,7 @@ class App extends React.Component{
   }
 
   setAllCurrentBasedOnPlaylist(playlist) {
-    this.setCurrentTracksToCurrentPlaylist(playlist);
+    this.setCurrentTracksToCurrentPlaylist(playlist, this.setCurrentTracksData);
   }
 
   // setCurrentTracksToCurrentPlaylist() {
@@ -112,14 +113,25 @@ class App extends React.Component{
   //   this.setState({currentTracks: tracks});
   // }
 
-  setCurrentTracksToCurrentPlaylist(playlist) {
+  setCurrentTracksData() {
+    const tracks = [];
+    this.state.currentTracks.forEach((track) => {
+      tracks.push(track.id)
+    });
+    spotifyApi.getAudioFeaturesForTracks(tracks)
+    .then((trackData) => {
+      this.setState({currentTracksData: trackData.audio_features});
+    })
+  }
+
+  setCurrentTracksToCurrentPlaylist(playlist, callback) {
     const tracks = [];
     playlist.items.forEach((track) => tracks.push(track))
-    this.setState({currentTracks: tracks});
+    this.setState({currentTracks: tracks}, callback);
   }
 
   render(){
-    if (this.state.currentlySelectedPlaylist.items.length) {
+    if (this.state.currentTracksData.length) {
       return (
         <div>
           <UserGreeting currentUser={this.state.currentUser}/>
@@ -132,7 +144,10 @@ class App extends React.Component{
               <AlbumArtMosaic currentlySelectedPlaylist={this.state.currentlySelectedPlaylist}/>
             }
           </div>
-          <ChartsContainer currentTracks={this.state.currentTracks}/>
+          
+          
+          <BarChart currentTracksData={this.state.currentTracksData} dataType="danceability"/>
+
           <a href='http://localhost:8888'> Login to Spotify </a>
   
           { this.state.loggedIn &&
