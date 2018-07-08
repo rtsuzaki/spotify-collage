@@ -340,6 +340,9 @@ template {
   display: none;
 }
 
+#avatar {
+  border-radius: 50%;
+}
 #userGreeting {
   display: flex;
   flex-direction: row;
@@ -348,18 +351,40 @@ template {
   align-items: center;
 }
 
+
+#trackTableAndMosaicContainer {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-around; */
+  flex-wrap: nowrap;
+  align-content: flex-start;
+  padding: 10px;
+}
+
+#mosaicAndChartContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-content: flex-start;
+}
+
 #mosaicContainer {
   display: flex;
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
   align-content: flex-start;
+  max-width: 75%;
 }
 
-#trackTableAndMosaicContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  align-content: flex-start;
+table{
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 400px;
+}
+
+th,td {
+  border-bottom: 1px solid #ddd;
+  padding: 5px;
 }

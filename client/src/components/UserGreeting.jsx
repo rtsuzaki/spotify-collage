@@ -5,7 +5,7 @@ const UserGreeting = (props) => {
     <div >
     {props.currentUser && props.currentUser.images ?
       (<div id="userGreeting">
-        <img src={props.currentUser.images[0].url} style={{ height: 50 }}/>
+        <img src={props.currentUser.images[0].url} style={{ height: 50}} id='avatar'/>
         <div>{props.currentUser.display_name}</div>
       </div>) : null
     }

@@ -81,7 +81,7 @@ class App extends React.Component{
   //Only works for current user's tracks
   getMyTopTracks() {
     return (
-      spotifyApi.getMyTopTracks({limit:40})
+      spotifyApi.getMyTopTracks({limit:50})
       .then((topTracks) => {
          this.setState({topTracks: topTracks})
          return topTracks;
@@ -137,32 +137,35 @@ class App extends React.Component{
           <UserGreeting currentUser={this.state.currentUser}/>
 
           <div id="trackTableAndMosaicContainer">
-            <TrackTable currentTracks={this.state.currentTracks}/>
-            {/* {console.log('selected playlist', this.state.currentlySelectedPlaylist)} */}
-            {
-              this.state.currentlySelectedPlaylist.items !== [] &&
-              <AlbumArtMosaic currentlySelectedPlaylist={this.state.currentlySelectedPlaylist}/>
-            }
-          </div>
-          
-          
-          <BarChart currentTracksData={this.state.currentTracksData} dataType="danceability"/>
-
-          <a href='http://localhost:8888'> Login to Spotify </a>
-  
-          { this.state.loggedIn &&
-            <div>
-              <div>
-                Now Playing: { this.state.nowPlaying.name }
-              </div>
-              <div>
-                <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }}/>
-              </div>
-              <button onClick={() => this.getNowPlaying()}>
-                Check Now Playing
-              </button>
+            <div className="vertical-align-container">
+              <TrackTable currentTracks={this.state.currentTracks}/>
+              { this.state.loggedIn &&
+                <div>
+                  <div>
+                    Now Playing: { this.state.nowPlaying.name }
+                  </div>
+                  <div>
+                    <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }}/>
+                  </div>
+                  <button onClick={() => this.getNowPlaying()}>
+                    Check Now Playing
+                  </button>
+                </div>
+              }
             </div>
-          }
+            {/* {this.state.currentlySelectedPlaylist.items !== [] && */}
+            <div id="mosaicAndChartContainer">
+              <AlbumArtMosaic currentlySelectedPlaylist={this.state.currentlySelectedPlaylist}/>
+              <div style={{ display: "flex", flexWrap: "wrap" }}>
+                <BarChart currentTracksData={this.state.currentTracksData} dataType="danceability"/>
+                <BarChart currentTracksData={this.state.currentTracksData} dataType="energy"/>
+                <BarChart currentTracksData={this.state.currentTracksData} dataType="acousticness"/>
+                <BarChart currentTracksData={this.state.currentTracksData} dataType="instrumentalness"/>
+                <BarChart currentTracksData={this.state.currentTracksData} dataType="valence"/>
+              </div>
+            </div>
+          </div>  
+          <a href='http://localhost:8888'> Login to Spotify </a>
         </div>
       );
     } else {
