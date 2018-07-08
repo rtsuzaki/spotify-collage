@@ -1,12 +1,14 @@
 const initialState = {
-  articles: []
+  currentTracks: [],
+  currentTracksData: [],
 };
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_ARTICLE":
-      state.articles.push(action.payload);
-      return state;
+    case "SET_CURRENT_TRACKS":
+      return {...state, currentTracks: action.payload};
+    case "SET_CURRENT_TRACKS_DATA":
+      return {...state, currentTracksData: action.payload};
     default:
       return state;
   }

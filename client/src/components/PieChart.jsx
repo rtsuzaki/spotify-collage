@@ -1,7 +1,12 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { VictoryPie, VictoryChart, VictoryAxis, VictoryTheme, VictoryLabel } from 'victory';
 
-class PieChart extends React.Component {
+const mapStateToProps = state => {
+  return { currentTracksData: state.currentTracksData };
+};
+
+class ConnectedPieChart extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -67,5 +72,7 @@ class PieChart extends React.Component {
     }
   }
 }
+
+const PieChart = connect(mapStateToProps)(ConnectedPieChart);
 
 export default PieChart;

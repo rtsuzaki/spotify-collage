@@ -1,7 +1,12 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLabel } from 'victory';
 
-class BarChart extends React.Component {
+const mapStateToProps = state => {
+  return { currentTracksData: state.currentTracksData };
+};
+
+class ConnectedBarChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -76,6 +81,6 @@ class BarChart extends React.Component {
   } 
 }
 
-
+const BarChart = connect(mapStateToProps)(ConnectedBarChart);
 
 export default BarChart;

@@ -1,15 +1,32 @@
 import React from "react";
+import { connect } from "react-redux";
 import SpotifyWebApi from 'spotify-web-api-js';
 import UserGreeting from './UserGreeting.jsx';
 import AlbumArtMosaic from './AlbumArtMosaic.jsx';
 import TrackTable from './TrackTable.jsx';
 import BarChart from './BarChart';
 import PieChart from './PieChart';
+import { setCurrentTracks, setCurrentTracksData } from '../redux/actions.js';
+
 import "../../styles/main.css";
 
 const spotifyApi = new SpotifyWebApi();
 
-class App extends React.Component{
+const mapStateToProps = (state) => {
+  return {
+    currentTracks: state.currentTracks,
+    currentTracksData: state.currentTracksData,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setCurrentTracks: tracks => dispatach(setCurrentTracks(tracks)),
+    setCurrentTracksData: data => dispatch(setCurrentTracksData(data)),
+  };
+};
+
+class ConnectedApp extends React.Component{
   constructor(props) {
     super(props);
     const params = this.getHashParams();
@@ -21,7 +38,7 @@ class App extends React.Component{
       loggedIn: token ? true : false,
       currentlySelectedPlaylist: {items:[]},
       currentTracks: [],
-      currentTracksData: [],
+      // currentTracksData: [],
       currentUser: {},
       topTracks: {},
       playlists: {},
@@ -121,7 +138,7 @@ class App extends React.Component{
     });
     spotifyApi.getAudioFeaturesForTracks(tracks)
     .then((trackData) => {
-      this.setState({currentTracksData: trackData.audio_features});
+      this.props.setCurrentTracksData(trackData.audio_features);
     })
   }
 
@@ -132,7 +149,7 @@ class App extends React.Component{
   }
 
   render(){
-    if (this.state.currentTracksData.length) {
+    if (this.props.currentTracksData.length) {
       return (
         <div>
           <UserGreeting currentUser={this.state.currentUser}/>
@@ -158,13 +175,13 @@ class App extends React.Component{
             <div id="mosaicAndChartContainer">
               <AlbumArtMosaic currentlySelectedPlaylist={this.state.currentlySelectedPlaylist}/>
               <div style={{ display: "flex", flexWrap: "wrap" }}>
-                <BarChart currentTracksData={this.state.currentTracksData} dataType="danceability"/>
-                <BarChart currentTracksData={this.state.currentTracksData} dataType="energy"/>
-                <BarChart currentTracksData={this.state.currentTracksData} dataType="acousticness"/>
-                <BarChart currentTracksData={this.state.currentTracksData} dataType="instrumentalness"/>
-                <BarChart currentTracksData={this.state.currentTracksData} dataType="valence"/>
-                <BarChart currentTracksData={this.state.currentTracksData} dataType="speechiness"/>
-                <PieChart currentTracksData={this.state.currentTracksData}/>
+                <BarChart dataType="danceability"/>
+                <BarChart dataType="energy"/>
+                <BarChart dataType="acousticness"/>
+                <BarChart dataType="instrumentalness"/>
+                <BarChart dataType="valence"/>
+                <BarChart dataType="speechiness"/>
+                <PieChart />
               </div>
             </div>
           </div>  
@@ -177,5 +194,7 @@ class App extends React.Component{
     }
   }
 }
+
+const App = connect(mapStateToProps, mapDispatchToProps)(ConnectedApp);
 
 export default App;
