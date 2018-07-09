@@ -342,14 +342,17 @@ template {
 
 #avatar {
   border-radius: 50%;
+  display: inline-block;
 }
-#userGreeting {
+
+/* #userGreeting {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: nowrap;
   align-items: center;
-}
+
+} */
 
 
 #trackTableAndMosaicContainer {
@@ -391,4 +394,68 @@ th,td {
 
 #victoryPieContainer {
   width: 50%;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.modal {
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  max-width:25%;
+  z-index: 10000;
+  overflow: auto;
+  padding: 4px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.topNav-ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 20px;
+  overflow: hidden;
+  background-color: gray;
+}
+
+.topNav-li {
+  float: left;
+}
+
+.topNav-li {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.topNav-li:hover {
+  background-color: #111;
+}
+
+
+#login {
+  display: inline-block;
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-around; */
+  flex-wrap: nowrap;
+  align-content: flex-start;
+  padding: 10px;
 }

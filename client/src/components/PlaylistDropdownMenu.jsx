@@ -1,29 +1,44 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import DropdownMenuItem from './DropdownMenuItem.jsx';
+import { toggleDropdownMenu, closeDropdownMenu } from '../redux/actions.js'
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    currentlySelectedMedia: state.currentlySelectedMedia,
+    currentlySelectedPlaylist: state.currentlySelectedPlaylist,
+    currentUser: state.currentUser,
     userPlaylists: state.userPlaylists,
+    dropdownMenuOpen: state.dropdownMenuOpen,
   }
 }
 
-const ConnectedPlaylistDropdownMenu = () => {
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleDropdownMenu: () => dispatch(toggleDropdownMenu()),
+    closeDropdownMenu: () => dispatch(closeDropdownMenu()),
+  };
+};
+
+const ConnectedPlaylistDropdownMenu = (props) => {
   return (
     <div className="dd-wrapper">
-    <div className="dd-header" >
-      <div className="dd-header-title"></div>
-    </div>
-    <ul className="dd-list">
-      <li className="dd-list-item">test1</li>
-      <li className="dd-list-item">test2</li>
-      <li className="dd-list-item">test3</li>
-    </ul>
-  </div>
+      <li className="topNav-li"  onClick={props.toggleDropdownMenu}>
+        <div className="dd-header-title">
+          {props.currentlySelectedPlaylist.name}
+        </div>
+      </li>
+      {props.dropdownMenuOpen &&
+      <div className="backdrop" onClick={props.closeDropdownMenu}>
+        <ul className="modal">
+          {props.userPlaylists.map((playlist) => (<DropdownMenuItem className="dd-list-item" key={playlist.id} playlist={playlist} userId={props.currentUser.id} switchPlaylist={props.switchPlaylist}/>))}
+        </ul>
+      </div>
+      }
+   </div>
+
   )
-  
 }
 
-const PlaylistDropdownMenu = connect(mapStateToProps)(ConnectedPlaylistDropdownMenu);
+const PlaylistDropdownMenu = connect(mapStateToProps, mapDispatchToProps)(ConnectedPlaylistDropdownMenu);
 
 export default PlaylistDropdownMenu;

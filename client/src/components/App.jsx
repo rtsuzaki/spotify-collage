@@ -6,8 +6,17 @@ import AlbumArtMosaic from './AlbumArtMosaic.jsx';
 import TrackTable from './TrackTable.jsx';
 import BarChart from './BarChart.jsx';
 import PieChart from './PieChart.jsx';
-import PlaylistDropdownMenu from './PlaylistDropdownMenu.jsx'
-import { setCurrentUser, setCurrentlySelectedMedia, setUserPlaylists, setTopTracks, setCurrentTracks, setCurrentTracksData } from '../redux/actions.js';
+import PlaylistDropdownMenu from './PlaylistDropdownMenu.jsx';
+import { 
+  setCurrentUser,
+  closeDropdownMenu,
+  setCurrentlySelectedPlaylist,
+  setUserPlaylists,
+  setTopTracks,
+  setCurrentTracks,
+  setCurrentTracksData,
+  setFeatureCount,
+} from '../redux/actions.js';
 
 import "../../styles/main.css";
 
@@ -17,10 +26,17 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.currentUser,
     userPlaylists: state.userPlaylists,
-    currentlySelectedMedia: state.currentlySelectedMedia,
+    currentlySelectedPlaylist: state.currentlySelectedPlaylist,
     topTracks: state.topTracks,
     currentTracks: state.currentTracks,
     currentTracksData: state.currentTracksData,
+    dropdownMenuOpen: state.dropdownMenuOpen,
+    // danceability: state.danceability,
+    // energy: state.energy,
+    // acousticness: state.acousticness,
+    // instrumentalness: state.instrumentalness,
+    // valence: state.valence,
+    // speechiness: state.speechiness,
   };
 };
 
@@ -28,10 +44,12 @@ const mapDispatchToProps = dispatch => {
   return {
     setCurrentUser: user => dispatch(setCurrentUser(user)),
     setUserPlaylists: playlists => dispatch(setUserPlaylists(playlists)),
-    setCurrentlySelectedMedia: media => dispatch(setCurrentlySelectedMedia(media)),
+    setCurrentlySelectedPlaylist: playlist => dispatch(setCurrentlySelectedPlaylist(playlist)),
     setTopTracks: tracks => dispatch(setTopTracks(tracks)),
     setCurrentTracks: tracks => dispatch(setCurrentTracks(tracks)),
     setCurrentTracksData: data => dispatch(setCurrentTracksData(data)),
+    closeDropdownMenu: () => dispatch(closeDropdownMenu()),
+    setFeatureCount: featureDataObj => dispatch(setFeatureCount(featureDataObj)),
   };
 };
 
@@ -47,22 +65,26 @@ class ConnectedApp extends React.Component{
       loggedIn: token ? true : false,
       nowPlaying: { name: 'Not Checked', albumArt: '' }
     };
+
+    this.handleClickOutsideDropdownMenu = this.handleClickOutsideDropdownMenu.bind(this);
+    this.switchPlaylist = this.switchPlaylist.bind(this);
+    this.switchAlbum = this.switchAlbum.bind(this);
+    this.getMyTopTracks = this.getMyTopTracks.bind(this);
   }
 
   componentDidMount() {
     this.getCurrentUser()
     .then((userId) => {
-      console.log('userid', userId)
       return this.getUserPlaylists(userId)
     })
     .then((playlists) => {
-      
-      return this.getMyTopTracks();
+      this.props.setCurrentlySelectedPlaylist(playlists.items[0]);
+      // return this.getMyTopTracks();
+      return spotifyApi.getPlaylistTracks(this.props.currentUser.id, playlists.items[0].id)
     })
-    .then((topTracks) => {
-      this.props.setCurrentlySelectedMedia(topTracks);
-      this.setCurrentTracksFromPlaylist(topTracks);
-      this.getCurrentTracksData();
+    .then((playlistTracksObj) => {
+      this.setCurrentTracksFromTracksList(playlistTracksObj.items);
+      this.setCurrentTracksDataFromTracksList(playlistTracksObj.items);
     })
     .catch(function(error) {
       console.error(error);
@@ -98,8 +120,7 @@ class ConnectedApp extends React.Component{
     return (
       spotifyApi.getUserPlaylists(userId)
       .then((playlists) => {
-        this.props.setUserPlaylists(playlists);
-        console.log('getUserplaylist', playlists)
+        this.props.setUserPlaylists(playlists.items);
         return playlists;
       }, (err) => {
         console.error(err);
@@ -108,12 +129,15 @@ class ConnectedApp extends React.Component{
   }
   
   //Only works for current user's tracks
-  getMyTopTracks() {
+  getMyTopTracks(timeRange) {
     return (
-      spotifyApi.getMyTopTracks({limit:50})
+      spotifyApi.getMyTopTracks({limit:50, time_range: timeRange})
       .then((topTracks) => {
-        //  this.setState({topTracks: topTracks})
-        this.props.setTopTracks(topTracks);
+        console.log(topTracks)
+        this.props.setCurrentTracks(topTracks.items);
+        this.props.setCurrentTracksData(topTracks.items);
+        // this.props.setCurrentlySelectedPlaylist(topTracks.items);
+        
         return topTracks;
       }, (err) => {
         console.error(err);
@@ -138,31 +162,62 @@ class ConnectedApp extends React.Component{
     )
   }
 
-  getCurrentTracksData() {
+  setCurrentTracksFromTracksList(tracklist) {
     const tracks = [];
-    this.props.currentTracks.forEach((track) => {
-      tracks.push(track.id)
+    tracklist.forEach((track) => tracks.push(track.track))
+    this.props.setCurrentTracks(tracks);
+  }
+
+  setCurrentTracksDataFromTracksList(tracklist) {
+    const tracks = [];
+    tracklist.forEach((track) => {
+      tracks.push(track.track.id)
     });
     spotifyApi.getAudioFeaturesForTracks(tracks)
     .then((trackData) => {
       this.props.setCurrentTracksData(trackData.audio_features);
+      this.props.setFeatureCount({feature: 'danceability', data: trackData.audio_features});
+      this.props.setFeatureCount({feature: 'energy', data: trackData.audio_features});
+      this.props.setFeatureCount({feature: 'acousticness', data: trackData.audio_features});
+      this.props.setFeatureCount({feature: 'instrumentalness', data: trackData.audio_features});
+      this.props.setFeatureCount({feature: 'valence', data: trackData.audio_features});
+      this.props.setFeatureCount({feature: 'speechiness', data: trackData.audio_features});
     })
   }
 
-  // setCurrentlySelectedPlaylist() {
-
-  // }
-
-  // setAllCurrentBasedOnPlaylist(playlist) {
-  //   this.setCurrentTracksToCurrentPlaylist(playlist);
-  //   this.getCurrentTracksData()
-  // }
-
-  setCurrentTracksFromPlaylist(playlist) {
-    const tracks = [];
-    playlist.items.forEach((track) => tracks.push(track))
-    this.props.setCurrentTracks(tracks);
+  switchPlaylist(userId, playlist) {
+    this.props.setCurrentlySelectedPlaylist(playlist);
+    spotifyApi.getPlaylistTracks(userId, playlist.id)
+    .then((playlistTracksObj) => {
+      console.log(playlistTracksObj)
+      this.setCurrentTracksFromTracksList(playlistTracksObj.items);
+      this.setCurrentTracksDataFromTracksList(playlistTracksObj.items);
+    })
   }
+
+  switchAlbum(album) {
+    this.props.setCurrentlySelectedPlaylist(album);
+    spotifyApi.getAlbum(album.id)
+    .then((albumObj) => {
+      console.log(albumObj)
+      const albumImages = albumObj.images;
+      const albumTracksWithoutAlbumInfo = albumObj.tracks.items;
+      const albumTracksWithAlbumInfo = albumTracksWithoutAlbumInfo.map((track) => {
+        track.album = {id: album.id, images: albumImages};
+        return track
+      })
+      this.props.setCurrentTracks(albumTracksWithAlbumInfo);
+      this.props.setCurrentTracksData(albumTracksWithAlbumInfo);
+    })
+  }
+
+
+  handleClickOutsideDropdownMenu() {
+    if (this.props.dropdownMenuOpen) {
+      this.props.closeDropdownMenu();
+    }
+  }
+
 
   render(){
     if (!this.props.currentTracksData.length) {
@@ -172,9 +227,19 @@ class ConnectedApp extends React.Component{
     } else {
       return (
         <div>
-          <UserGreeting />
-          <PlaylistDropdownMenu />
-          <a href='http://localhost:8888'> Login to Spotify </a>
+          <div className="flexRow">
+          <button onClick={()=>this.props.setFeatureCount({feature: 'danceability', data: this.props.currentTracksData})}>CLICK ME</button>
+          <a id="login" href='http://localhost:8888'> Login to Spotify </a>
+          </div>
+          
+          <ul className="topNav-ul">
+            <UserGreeting />
+            <PlaylistDropdownMenu switchPlaylist={this.switchPlaylist}/>
+            <li className="topNav-li" onClick={()=>this.getMyTopTracks('short_term')}>Recent Top Tracks</li>
+            <li className="topNav-li" onClick={()=>this.getMyTopTracks('medium_term')}>Past Few Months Top Tracks</li>
+            <li className="topNav-li" onClick={()=>this.getMyTopTracks('long_term')}>All Time Top Tracks</li>
+            
+          </ul>
           <div id="trackTableAndMosaicContainer">
             <div className="vertical-align-container">
               <TrackTable />
@@ -193,7 +258,7 @@ class ConnectedApp extends React.Component{
               }
             </div>
             <div id="mosaicAndChartContainer">
-              <AlbumArtMosaic />
+              <AlbumArtMosaic switchAlbum={this.switchAlbum}/>
               <div style={{ display: "flex", flexWrap: "wrap" }}>
                 <BarChart dataType="danceability"/>
                 <BarChart dataType="energy"/>

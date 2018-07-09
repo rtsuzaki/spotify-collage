@@ -9,17 +9,40 @@ const mapStateToProps = state => {
 class ConnectedPieChart extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      pieChartData: null,
-    }
+    // this.state = {
+    //   pieChartData: null,
+    // }
   }
-  componentDidMount() {
-    this.setPieChartData();
-  }
+  // componentDidMount() {
+  //   this.setPieChartData();
+  // }
 
-  setPieChartData() {
-    // Key values are integers representing the song's pitch. https://en.wikipedia.org/wiki/Pitch_class
-    const chartCount = {
+  // setPieChartData() {
+  //   // Key values are integers representing the song's pitch. https://en.wikipedia.org/wiki/Pitch_class
+  //   const chartCount = {
+  //     0: 0,
+  //     1: 0,
+  //     2: 0,
+  //     3: 0,
+  //     4: 0,
+  //     5: 0,
+  //     6: 0,
+  //     7: 0,
+  //     8: 0,
+  //     9: 0,
+  //     10: 0,
+  //     11: 0
+  //   }
+  //   this.props.currentTracksData.forEach((track) => {
+  //     chartCount[track.key] += 1; 
+  //   });
+  //   this.setState({
+  //     pieChartData: chartCount,
+  //   });
+  // }
+
+  render() {
+    const pieChartData = {
       0: 0,
       1: 0,
       2: 0,
@@ -34,15 +57,10 @@ class ConnectedPieChart extends React.Component {
       11: 0
     }
     this.props.currentTracksData.forEach((track) => {
-      chartCount[track.key] += 1; 
+      pieChartData[track.key] += 1; 
     });
-    this.setState({
-      pieChartData: chartCount,
-    });
-  }
 
-  render() {
-    if (this.state.pieChartData) {
+    if (pieChartData) {
       return (
         <div id="victoryPieContainer">
           <VictoryGroup theme={VictoryTheme.material}>
@@ -50,18 +68,18 @@ class ConnectedPieChart extends React.Component {
              
               width={400} height={400}
               data={[
-                { x: "C", y: this.state.pieChartData[0] },
-                { x: "C♯", y: this.state.pieChartData[1] },
-                { x: "D", y: this.state.pieChartData[2] },
-                { x: "D♯", y: this.state.pieChartData[3] },
-                { x: "E", y: this.state.pieChartData[4] },
-                { x: "F", y: this.state.pieChartData[5] },
-                { x: "F♯", y: this.state.pieChartData[6] },
-                { x: "G", y: this.state.pieChartData[7] },
-                { x: "G♯", y: this.state.pieChartData[8] },
-                { x: "A", y: this.state.pieChartData[9] },
-                { x: "A♯", y: this.state.pieChartData[10] },
-                { x: "B", y: this.state.pieChartData[11] }
+                { x: "C", y: pieChartData[0] },
+                { x: "C♯", y: pieChartData[1] },
+                { x: "D", y: pieChartData[2] },
+                { x: "D♯", y: pieChartData[3] },
+                { x: "E", y: pieChartData[4] },
+                { x: "F", y: pieChartData[5] },
+                { x: "F♯", y: pieChartData[6] },
+                { x: "G", y: pieChartData[7] },
+                { x: "G♯", y: pieChartData[8] },
+                { x: "A", y: pieChartData[9] },
+                { x: "A♯", y: pieChartData[10] },
+                { x: "B", y: pieChartData[11] }
               ]}
               innerRadius={50} labelRadius={135}
               style={{ labels: { fill: "red", fontSize: 20 } }}
