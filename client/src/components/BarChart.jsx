@@ -13,7 +13,6 @@ class ConnectedBarChart extends React.Component {
       chartData: null,
       total: 0,
     }
-
   }
   componentDidMount() {
     this.setBarChartData();

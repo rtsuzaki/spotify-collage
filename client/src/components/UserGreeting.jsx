@@ -1,8 +1,15 @@
 import React from 'react';
+import { connect } from "react-redux";
 
-const UserGreeting = (props) => {
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.currentUser,
+  };
+};
+
+const ConnectedUserGreeting = (props) => {
   return (
-    <div >
+    <div>
     {props.currentUser && props.currentUser.images ?
       (<div id="userGreeting">
         <img src={props.currentUser.images[0].url} style={{ height: 50}} id='avatar'/>
@@ -13,5 +20,7 @@ const UserGreeting = (props) => {
 
   )
 }
+
+const UserGreeting = connect(mapStateToProps)(ConnectedUserGreeting);
 
 export default UserGreeting;

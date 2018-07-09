@@ -4,9 +4,10 @@ import SpotifyWebApi from 'spotify-web-api-js';
 import UserGreeting from './UserGreeting.jsx';
 import AlbumArtMosaic from './AlbumArtMosaic.jsx';
 import TrackTable from './TrackTable.jsx';
-import BarChart from './BarChart';
-import PieChart from './PieChart';
-import { setCurrentTracks, setCurrentTracksData } from '../redux/actions.js';
+import BarChart from './BarChart.jsx';
+import PieChart from './PieChart.jsx';
+import PlaylistDropdownMenu from './PlaylistDropdownMenu.jsx'
+import { setCurrentUser, setCurrentlySelectedMedia, setUserPlaylists, setTopTracks, setCurrentTracks, setCurrentTracksData } from '../redux/actions.js';
 
 import "../../styles/main.css";
 
@@ -14,6 +15,10 @@ const spotifyApi = new SpotifyWebApi();
 
 const mapStateToProps = (state) => {
   return {
+    currentUser: state.currentUser,
+    userPlaylists: state.userPlaylists,
+    currentlySelectedMedia: state.currentlySelectedMedia,
+    topTracks: state.topTracks,
     currentTracks: state.currentTracks,
     currentTracksData: state.currentTracksData,
   };
@@ -21,7 +26,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setCurrentTracks: tracks => dispatach(setCurrentTracks(tracks)),
+    setCurrentUser: user => dispatch(setCurrentUser(user)),
+    setUserPlaylists: playlists => dispatch(setUserPlaylists(playlists)),
+    setCurrentlySelectedMedia: media => dispatch(setCurrentlySelectedMedia(media)),
+    setTopTracks: tracks => dispatch(setTopTracks(tracks)),
+    setCurrentTracks: tracks => dispatch(setCurrentTracks(tracks)),
     setCurrentTracksData: data => dispatch(setCurrentTracksData(data)),
   };
 };
@@ -36,26 +45,27 @@ class ConnectedApp extends React.Component{
     }
     this.state = {
       loggedIn: token ? true : false,
-      currentlySelectedPlaylist: {items:[]},
-      currentTracks: [],
-      // currentTracksData: [],
-      currentUser: {},
-      topTracks: {},
-      playlists: {},
       nowPlaying: { name: 'Not Checked', albumArt: '' }
     };
   }
 
   componentDidMount() {
     this.getCurrentUser()
-    .then((userId)=> {
-      this.getUserPlaylists(userId);
+    .then((userId) => {
+      console.log('userid', userId)
+      return this.getUserPlaylists(userId)
     })
-    .then(()=> {
+    .then((playlists) => {
+      
       return this.getMyTopTracks();
     })
     .then((topTracks) => {
-      this.setState({currentlySelectedPlaylist: topTracks}, () => {this.setAllCurrentBasedOnPlaylist(this.state.currentlySelectedPlaylist)})
+      this.props.setCurrentlySelectedMedia(topTracks);
+      this.setCurrentTracksFromPlaylist(topTracks);
+      this.getCurrentTracksData();
+    })
+    .catch(function(error) {
+      console.error(error);
     });
   }
 
@@ -75,7 +85,7 @@ class ConnectedApp extends React.Component{
     return (
       spotifyApi.getMe()
       .then((me) => {
-        this.setState({currentUser: me});
+        this.props.setCurrentUser(me);
         return me;
       }, (err) => {
         console.log(err)
@@ -86,10 +96,11 @@ class ConnectedApp extends React.Component{
   //Works for any user--give userId as input
   getUserPlaylists(userId) {
     return (
-      spotifyApi.getUserPlaylists(userId)  // note that we don't pass a user id
-      .then((myPlaylist) => {
-        this.setState({playlists: myPlaylist})
-        return myPlaylist;
+      spotifyApi.getUserPlaylists(userId)
+      .then((playlists) => {
+        this.props.setUserPlaylists(playlists);
+        console.log('getUserplaylist', playlists)
+        return playlists;
       }, (err) => {
         console.error(err);
       })
@@ -101,8 +112,9 @@ class ConnectedApp extends React.Component{
     return (
       spotifyApi.getMyTopTracks({limit:50})
       .then((topTracks) => {
-         this.setState({topTracks: topTracks})
-         return topTracks;
+        //  this.setState({topTracks: topTracks})
+        this.props.setTopTracks(topTracks);
+        return topTracks;
       }, (err) => {
         console.error(err);
       })
@@ -110,7 +122,8 @@ class ConnectedApp extends React.Component{
   }
 
   getNowPlaying() {
-    spotifyApi.getMyCurrentPlaybackState()
+    return (
+      spotifyApi.getMyCurrentPlaybackState()
       .then((response) => {
         this.setState({
           nowPlaying: { 
@@ -118,22 +131,16 @@ class ConnectedApp extends React.Component{
               albumArt: response.item.album.images[0].url
             }
         });
+        return response;
+      }, (err) => {
+        console.error(err);
       })
+    )
   }
 
-  setAllCurrentBasedOnPlaylist(playlist) {
-    this.setCurrentTracksToCurrentPlaylist(playlist, this.setCurrentTracksData);
-  }
-
-  // setCurrentTracksToCurrentPlaylist() {
-  //   const tracks = [];
-  //   this.state.currentlySelectedPlaylist.items.forEach((track) => tracks.push(track))
-  //   this.setState({currentTracks: tracks});
-  // }
-
-  setCurrentTracksData() {
+  getCurrentTracksData() {
     const tracks = [];
-    this.state.currentTracks.forEach((track) => {
+    this.props.currentTracks.forEach((track) => {
       tracks.push(track.id)
     });
     spotifyApi.getAudioFeaturesForTracks(tracks)
@@ -142,21 +149,35 @@ class ConnectedApp extends React.Component{
     })
   }
 
-  setCurrentTracksToCurrentPlaylist(playlist, callback) {
+  // setCurrentlySelectedPlaylist() {
+
+  // }
+
+  // setAllCurrentBasedOnPlaylist(playlist) {
+  //   this.setCurrentTracksToCurrentPlaylist(playlist);
+  //   this.getCurrentTracksData()
+  // }
+
+  setCurrentTracksFromPlaylist(playlist) {
     const tracks = [];
     playlist.items.forEach((track) => tracks.push(track))
-    this.setState({currentTracks: tracks}, callback);
+    this.props.setCurrentTracks(tracks);
   }
 
   render(){
-    if (this.props.currentTracksData.length) {
+    if (!this.props.currentTracksData.length) {
+      return (
+        <a href='http://localhost:8888'> Login to Spotify </a>
+      )
+    } else {
       return (
         <div>
-          <UserGreeting currentUser={this.state.currentUser}/>
+          <UserGreeting />
+          <PlaylistDropdownMenu />
           <a href='http://localhost:8888'> Login to Spotify </a>
           <div id="trackTableAndMosaicContainer">
             <div className="vertical-align-container">
-              <TrackTable currentTracks={this.state.currentTracks}/>
+              <TrackTable />
               { this.state.loggedIn &&
                 <div>
                   <div>
@@ -171,9 +192,8 @@ class ConnectedApp extends React.Component{
                 </div>
               }
             </div>
-            {/* {this.state.currentlySelectedPlaylist.items !== [] && */}
             <div id="mosaicAndChartContainer">
-              <AlbumArtMosaic currentlySelectedPlaylist={this.state.currentlySelectedPlaylist}/>
+              <AlbumArtMosaic />
               <div style={{ display: "flex", flexWrap: "wrap" }}>
                 <BarChart dataType="danceability"/>
                 <BarChart dataType="energy"/>
@@ -181,17 +201,13 @@ class ConnectedApp extends React.Component{
                 <BarChart dataType="instrumentalness"/>
                 <BarChart dataType="valence"/>
                 <BarChart dataType="speechiness"/>
-                <PieChart />
+                <PieChart/>
               </div>
             </div>
           </div>  
         </div>
       );
-    } else {
-      return (
-        <a href='http://localhost:8888'> Login to Spotify </a>
-      )
-    }
+    } 
   }
 }
 

@@ -1,11 +1,16 @@
 import React from 'react';
+import { connect } from "react-redux";
 import MosaicEntry from './MosaicEntry.jsx';
 
-const AlbumArtMosaic = (props) => {
+const mapStateToProps = state => {
+  return { currentlySelectedMedia: state.currentlySelectedMedia };
+};
+
+const ConnectedAlbumArtMosaic = (props) => {
   var albums = {};
 
-  // Combining tracks with same album together
-  props.currentlySelectedPlaylist.items.forEach((entry) => {
+  // Combining tracks with same album together to prevent duplicate images
+  props.currentlySelectedMedia.items.forEach((entry) => {
       if (!albums[entry.album.id]) {
         albums[entry.album.id] = [entry];
       } else {
@@ -20,5 +25,7 @@ const AlbumArtMosaic = (props) => {
     )
   // }
 }
+
+const AlbumArtMosaic = connect(mapStateToProps)(ConnectedAlbumArtMosaic);
 
 export default AlbumArtMosaic;

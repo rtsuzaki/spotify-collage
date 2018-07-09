@@ -1,7 +1,12 @@
 import React from 'react';
+import { connect } from "react-redux";
 import TrackTableEntry from './TrackTableEntry.jsx';
 
-const TrackTable = (props) => {
+const mapStateToProps = state => {
+  return { currentTracks: state.currentTracks };
+};
+
+const ConnectedTrackTable = (props) => {
   return (
     <table>
       <thead>
@@ -16,5 +21,7 @@ const TrackTable = (props) => {
     </table>
   )
 }
+
+const TrackTable = connect(mapStateToProps)(ConnectedTrackTable);
 
 export default TrackTable;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { VictoryPie, VictoryChart, VictoryAxis, VictoryTheme, VictoryLabel } from 'victory';
+import { VictoryPie, VictoryGroup, VictoryTheme, VictoryLabel } from 'victory';
 
 const mapStateToProps = state => {
   return { currentTracksData: state.currentTracksData };
@@ -45,26 +45,30 @@ class ConnectedPieChart extends React.Component {
     if (this.state.pieChartData) {
       return (
         <div id="victoryPieContainer">
-          <VictoryPie
-            // radius={50}
-            data={[
-              { x: "C", y: this.state.pieChartData[0] },
-              { x: "C♯", y: this.state.pieChartData[1] },
-              { x: "D", y: this.state.pieChartData[2] },
-              { x: "D♯", y: this.state.pieChartData[3] },
-              { x: "E", y: this.state.pieChartData[4] },
-              { x: "F", y: this.state.pieChartData[5] },
-              { x: "F♯", y: this.state.pieChartData[6] },
-              { x: "G", y: this.state.pieChartData[7] },
-              { x: "G♯", y: this.state.pieChartData[8] },
-              { x: "A", y: this.state.pieChartData[9] },
-              { x: "A♯", y: this.state.pieChartData[10] },
-              { x: "B", y: this.state.pieChartData[11] }
-            ]}
-            labelRadius={175}
-            style={{ labels: { fill: "red", fontSize: 14, fontWeight: "bold" } }}
-            // padding={50}
-          />
+          <VictoryGroup theme={VictoryTheme.material}>
+            <VictoryPie
+             
+              width={400} height={400}
+              data={[
+                { x: "C", y: this.state.pieChartData[0] },
+                { x: "C♯", y: this.state.pieChartData[1] },
+                { x: "D", y: this.state.pieChartData[2] },
+                { x: "D♯", y: this.state.pieChartData[3] },
+                { x: "E", y: this.state.pieChartData[4] },
+                { x: "F", y: this.state.pieChartData[5] },
+                { x: "F♯", y: this.state.pieChartData[6] },
+                { x: "G", y: this.state.pieChartData[7] },
+                { x: "G♯", y: this.state.pieChartData[8] },
+                { x: "A", y: this.state.pieChartData[9] },
+                { x: "A♯", y: this.state.pieChartData[10] },
+                { x: "B", y: this.state.pieChartData[11] }
+              ]}
+              innerRadius={50} labelRadius={135}
+              style={{ labels: { fill: "red", fontSize: 20 } }}
+              // padding={50}
+            />
+            <VictoryLabel text={'Keys of Songs'} x={138} y={175} />
+          </VictoryGroup>
         </div>
       )
     } else {
