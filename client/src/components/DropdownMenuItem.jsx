@@ -2,7 +2,7 @@ import React from 'react';
 
 const DropdownMenuItem = (props) => {
   return (
-    <li 
+    <li className="dropdownMenuItem"
       onClick={()=>{
         props.switchPlaylist(props.userId, props.playlist);
       }}

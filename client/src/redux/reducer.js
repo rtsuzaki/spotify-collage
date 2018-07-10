@@ -102,6 +102,20 @@ const initialState = {
     total: 0,
     numberOfTracks: 0,
   },
+  keysData: {
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+    6: 0,
+    7: 0,
+    8: 0,
+    9: 0,
+    10: 0,
+    11: 0
+  },
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -149,6 +163,25 @@ const rootReducer = (state = initialState, action) => {
       return {...state, dropdownMenuOpen: !state.dropdownMenuOpen};
     case "CLOSE_DROPDOWN_MENU":
       return {...state, dropdownMenuOpen: false};
+    case "SET_KEYS_DATA":
+      const pieChartData = {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0,
+        7: 0,
+        8: 0,
+        9: 0,
+        10: 0,
+        11: 0
+      };
+      action.payload.forEach((track) => {
+        pieChartData[track.key] += 1; 
+      });
+      return {...state, keysData: pieChartData}
     default:
       return state;
   }

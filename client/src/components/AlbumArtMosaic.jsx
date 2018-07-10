@@ -21,7 +21,6 @@ const ConnectedAlbumArtMosaic = (props) => {
         albums[entry.album.id].push(entry);
       }
     }
-      
   });
   // if (props.currentlySelectedPlaylist.items) {
   return (

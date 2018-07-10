@@ -8,11 +8,11 @@ const mapStateToProps = state => {
 
 const ConnectedTrackTable = (props) => {
   return (
-    <table>
+    <table id="trackTable"> 
       <thead>
         <tr>
-          <th>Songs</th>
-          <th>Artists</th>
+          <th className="track-th">Current Tracks</th>
+          {/* <th>Artists</th> */}
         </tr>
       </thead>
       <tbody>

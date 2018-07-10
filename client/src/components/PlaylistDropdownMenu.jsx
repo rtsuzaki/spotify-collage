@@ -21,16 +21,21 @@ const mapDispatchToProps = (dispatch) => {
 
 const ConnectedPlaylistDropdownMenu = (props) => {
   return (
-    <div className="dd-wrapper">
-      <li className="topNav-li"  onClick={props.toggleDropdownMenu}>
-        <div className="dd-header-title">
+    <div id="playlistNav-li">
+      <div id="currentSelectionText">
+        <span className="playlist-title">
+          Currently Selected: 
+        </span>
+      </div>
+      <div className="playlistNav-li"  onClick={props.toggleDropdownMenu}>
+        <div className="playlist-title">
           {props.currentlySelectedPlaylist.name}
         </div>
-      </li>
+      </div>
       {props.dropdownMenuOpen &&
       <div className="backdrop" onClick={props.closeDropdownMenu}>
         <ul className="modal">
-          {props.userPlaylists.map((playlist) => (<DropdownMenuItem className="dd-list-item" key={playlist.id} playlist={playlist} userId={props.currentUser.id} switchPlaylist={props.switchPlaylist}/>))}
+          {props.userPlaylists.map((playlist) => (<DropdownMenuItem key={playlist.id} playlist={playlist} userId={props.currentUser.id} switchPlaylist={props.switchPlaylist}/>))}
         </ul>
       </div>
       }

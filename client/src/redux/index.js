@@ -9,6 +9,7 @@ import {
   toggleDropdownMenu,
   closeDropdownMenu,
   setFeatureCount,
+  setKeysData,
 } from './actions.js';
 
 window.store = store;
@@ -21,3 +22,4 @@ window.setCurrentTracksData = setCurrentTracksData;
 window.toggleDropdownMenu = toggleDropdownMenu;
 window.closeDropdownMenu = closeDropdownMenu;
 window.setFeatureCount = setFeatureCount;
+window.setKeysData = setKeysData;

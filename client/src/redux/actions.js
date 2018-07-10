@@ -7,6 +7,6 @@ export const setCurrentTracks = tracks => ({type: "SET_CURRENT_TRACKS", payload:
 export const toggleDropdownMenu = () => ({type: "TOGGLE_DROPDOWN_MENU", payload: null});
 export const closeDropdownMenu = () => ({type: "CLOSE_DROPDOWN_MENU", payload: null});
 export const setFeatureCount = featureDataObj => ({type: "SET_FEATURE_COUNT", payload: featureDataObj});
-
+export const setKeysData = tracksData => ({type: "SET_KEYS_DATA", payload: tracksData});
 
 

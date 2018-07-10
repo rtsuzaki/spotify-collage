@@ -328,6 +328,7 @@ summary {
  * Add the correct display in IE 10+.
  */
 
+ 
 template {
   display: none;
 }
@@ -339,6 +340,12 @@ template {
 [hidden] {
   display: none;
 }
+
+div {
+  padding: 0px;
+  margin: 0px;
+}
+
 
 #avatar {
   border-radius: 50%;
@@ -353,44 +360,6 @@ template {
   align-items: center;
 
 } */
-
-
-#trackTableAndMosaicContainer {
-  display: flex;
-  flex-direction: row;
-  /* justify-content: space-around; */
-  flex-wrap: nowrap;
-  align-content: flex-start;
-  padding: 10px;
-}
-
-#mosaicAndChartContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-  align-content: flex-start;
-}
-
-#mosaicContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  max-width: 75%;
-}
-
-table{
-  border-collapse: collapse;
-  table-layout: fixed;
-  width: 400px;
-}
-
-th,td {
-  border-bottom: 1px solid #ddd;
-  padding: 5px;
-}
 
 #victoryPieContainer {
   width: 50%;
@@ -410,52 +379,284 @@ th,td {
 
 .modal {
   position: relative;
-  top: 0;
+  top: 101px;
   right: 0;
   bottom: 0;
-  left: 0;
+  left: 480px;
   max-width:25%;
   z-index: 10000;
   overflow: auto;
   padding: 4px;
   cursor: pointer;
-  background-color: white;
+  background-color: #506e86;
 }
 
 .topNav-ul {
   list-style-type: none;
   margin: 0;
-  padding: 20px;
+  padding: 0px;
   overflow: hidden;
-  background-color: gray;
+  background-color: black;
+  position: fixed;
+  top: 101px;
+  width: 100%;
+  /* display: block; */
+  z-index: 50;
+  font-family: sans-serif;
+}
+
+#playlistNav {
+  /* display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  align-content: center;
+  width: 100%;
+  height: 100%; */
+  display: block;
+  text-align: center;
 }
 
 .topNav-li {
   float: left;
-}
-
-.topNav-li {
   display: block;
   color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  background-color: black;
 }
 
 .topNav-li:hover {
-  background-color: #111;
+  background-color: #506e86;
+  cursor: pointer;
+}
+
+.playlistNav-ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0px;
+  overflow: hidden;
+  background-color: black;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  z-index: 100;
+  font-family: sans-serif;
+  border-bottom: solid white 1px;
+}
+
+#currentSelectionText {
+  float: left;
+  display: block;
+  color: white;
+  background-color: black;
+  text-align: center;
+  text-decoration: none;
+  padding: 14px 16px;
+}
+
+.playlist-title {
+  font-size: 36px;
+  font-style: bold;
+}
+
+.playlistNav-li {
+  float: left;
+  display: inline-block;
+  color: white;
+  background-color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  height: 100%;
+}
+
+.playlistNav-li:hover {
+  background-color: #506e86;
+  cursor: pointer;
 }
 
 
 #login {
   display: inline-block;
+  float:right;
 }
 
-.flexRow {
+#trackTable {
+  background-color: white;
+  border-radius: 5px;
+}
+
+table{
+  border-collapse: collapse;
+  table-layout: fixed;
+  /* min-width: 200px; */
+  /* padding: 20px; */
+
+}
+
+.track-th {
+  color: white;
+  font-family: sans-serif;
+  font-size: 18px;
+  border-bottom: 1px solid black;
+  font-style: normal;
+  padding: 10px;
+  background-color: black
+}
+
+.track-td {
+  color: #506e86;
+  font-family: sans-serif;
+  font-size: 14px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.artist-td {
+  color: #506e86;
+  font-family: sans-serif;
+  font-size: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.trackEntry:hover .track-td {
+  color: white;
+}
+
+.trackEntry:hover .artist-td {
+  color: white;
+}
+
+
+.trackEntry {
+  border-bottom: 1px solid black;
+  padding: 5px;
+}
+
+.trackEntry:hover {
+  background-color: #506e86;
+}
+
+#trackTableAndMosaicContainer {
   display: flex;
   flex-direction: row;
   /* justify-content: space-around; */
   flex-wrap: nowrap;
+  justify-content: center;
+  align-content: center;
+  align-items: flex-start;
+  position: absolute;
+  padding-top: 20px;
+  top: 145px;
+  width: 100%;
+  background-color: #d8dfe2
+}
+
+/* #mosaicAndChartContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
   align-content: flex-start;
-  padding: 10px;
+  align-items: center;
+} */
+
+#tracksContainer {
+  width: 15%;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+
+#chartsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  width:60%;
+  /* border: solid blue 1px; */
+  padding-left:30px;
+  padding-right:10px;
+  padding-top: 20px;
+  border-radius: 5px;
+  background-color: white;
+}
+
+#mosaicContainer {
+  float: right;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width:20%;
+  /* padding-left: 20px;
+  padding-right: 20px; */
+
+  /* border: solid red 1px; */
+}
+
+#nowPlaying {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding-top: 10px;
+  padding-right: 50px;
+}
+
+#nowPlaying-btn {
+  /* float: right; */
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  background-color: white;
+  border-radius: 5px;
+  font-size: 12px;
+  outline: none;
+}
+
+#nowPlaying-btn:hover {
+  background-color: #506e86;
+  color: white;
+  cursor: pointer;
+}
+
+.albumArt:hover {
+  cursor: pointer;
+}
+
+.dropdownMenuItem {
+  padding: 5px;
+  font-size: 14px;
+  border-bottom: solid black 1px;
+}
+
+.playlistNav-ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0px;
+  overflow: hidden;
+  background-color: black;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  z-index: 100;
+  font-family: sans-serif;
+  border-bottom: solid white 1px;
 }

@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
 
 const ConnectedUserGreeting = (props) => {
   return (
-    <li className="topNav-li">
+    <li className="playlistNav-li">
     {props.currentUser && props.currentUser.images ?
       (<div id="userGreeting">
         <img src={props.currentUser.images[0].url} style={{ height: 50}} id='avatar'/>
