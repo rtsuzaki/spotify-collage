@@ -6,6 +6,7 @@ import AlbumArtMosaic from './AlbumArtMosaic.jsx';
 import TrackTable from './TrackTable.jsx';
 import BarChart from './BarChart.jsx';
 import PieChart from './PieChart.jsx';
+// import RadarChart from './RadarChart.jsx';
 import PlaylistDropdownMenu from './PlaylistDropdownMenu.jsx';
 import { 
   setCurrentUser,
@@ -139,11 +140,11 @@ class ConnectedApp extends React.Component{
         this.props.setCurrentTracks(topTracks.items);
         // this.props.setCurrentTracksData(topTracks.items);
         if (timeRange === 'short_term') {
-          const playlistTitle = 'Recent Top Tracks';
+          var playlistTitle = 'Recent Top Tracks';
         } else if (timeRange === 'medium_term') {
-          const playlistTitle = 'Past Months Top Tracks';
+          var playlistTitle = 'Past Months Top Tracks';
         } else if (timeRange === 'long_term') {
-          const playlistTitle = 'All Time Top Tracks';
+          var playlistTitle = 'All Time Top Tracks';
         }
         this.props.setCurrentlySelectedPlaylist({name: playlistTitle});
         this.setCurrentTracksDataFromTracksList(topTracks.items,'album')
@@ -189,11 +190,9 @@ class ConnectedApp extends React.Component{
       tracklist.forEach((track) => {
         tracks.push(track.id)
       });
-      console.log('albumtracks', tracks)
     }
     spotifyApi.getAudioFeaturesForTracks(tracks)
     .then((trackData) => {
-      console.log('hit here')
       this.props.setCurrentTracksData(trackData.audio_features);
       this.props.setFeatureCount({feature: 'danceability', data: trackData.audio_features});
       this.props.setFeatureCount({feature: 'energy', data: trackData.audio_features});
@@ -282,7 +281,7 @@ class ConnectedApp extends React.Component{
                 <BarChart dataType="acousticness" color="gold"/>
                 <BarChart dataType="instrumentalness" color="cyan"/>
                 <BarChart dataType="valence" color="navy"/>
-                <BarChart dataType="speechiness"/>
+                <BarChart dataType="speechiness" color="#00b906"/>
                 <PieChart/>
               </div>
               <AlbumArtMosaic switchAlbum={this.switchAlbum}/>
