@@ -22,6 +22,8 @@ import {
 
 import "../../styles/main.css";
 
+var loginPageUrl = process.env.loginPageUrl || 'http://localhost:8888';
+
 const spotifyApi = new SpotifyWebApi();
 
 const mapStateToProps = (state) => {
@@ -33,12 +35,6 @@ const mapStateToProps = (state) => {
     currentTracks: state.currentTracks,
     currentTracksData: state.currentTracksData,
     dropdownMenuOpen: state.dropdownMenuOpen,
-    // danceability: state.danceability,
-    // energy: state.energy,
-    // acousticness: state.acousticness,
-    // instrumentalness: state.instrumentalness,
-    // valence: state.valence,
-    // speechiness: state.speechiness,
   };
 };
 
@@ -241,7 +237,7 @@ class ConnectedApp extends React.Component{
   render(){
     if (!this.props.currentTracksData.length) {
       return (
-        <a href='http://localhost:8888'> Login to Spotify </a>
+        <a href={loginPageUrl}> Login to Spotify </a>
       )
     } else {
       return (
@@ -268,7 +264,7 @@ class ConnectedApp extends React.Component{
             <li className="topNav-li" onClick={()=>this.getMyTopTracks('short_term')}>Recent Top Tracks</li>
             <li className="topNav-li" onClick={()=>this.getMyTopTracks('medium_term')}>Past Months Top Tracks</li>
             <li className="topNav-li" onClick={()=>this.getMyTopTracks('long_term')}>All Time Top Tracks</li>
-            <a id="login" className="playlistNav-li" href='http://localhost:8888'> Login to Spotify </a>
+            <a id="login" className="playlistNav-li" href={loginPageUrl}> Login to Spotify </a>
           </ul>
 
           <div id="trackTableAndMosaicContainer">

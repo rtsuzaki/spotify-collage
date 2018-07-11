@@ -396,7 +396,7 @@ div {
   margin: 0;
   padding: 0px;
   overflow: hidden;
-  background-color: #2b4450;
+  background-color: black;
   position: fixed;
   top: 101px;
   width: 100%;
@@ -427,7 +427,7 @@ div {
   text-decoration: none;
   border-left: solid 1px;
   border-right: solid 1px;
-  background-color: #f78536;
+  background-color: black;
 }
 
 .topNav-li:hover {
@@ -440,7 +440,7 @@ div {
   margin: 0;
   padding: 0px;
   overflow: hidden;
-  background-color: #f78536;
+  background-color: black;
   position: fixed;
   top: 0px;
   width: 100%;
@@ -457,7 +457,7 @@ div {
   float: left;
   display: block;
   color: white;
-  background-color: #2b4450;
+  background-color: black;
   text-align: center;
   text-decoration: none;
   padding: 14px 16px;
@@ -472,7 +472,7 @@ div {
   float: left;
   display: inline-block;
   color: white;
-  background-color: #2b4450;
+  background-color: black;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -507,10 +507,10 @@ table{
   color: white;
   font-family: sans-serif;
   font-size: 18px;
-  border-bottom: 1px solid #2b4450;
+  border-bottom: 1px solid black;
   font-style: normal;
   padding: 10px;
-  background-color: #2b4450
+  background-color: black
 }
 
 .track-td {
@@ -539,7 +539,7 @@ table{
 
 
 .trackEntry {
-  border-bottom: 1px solid #2b4450;
+  border-bottom: 1px solid black;
   padding: 5px;
 }
 
@@ -642,7 +642,7 @@ table{
 .dropdownMenuItem {
   padding: 5px;
   font-size: 14px;
-  border-bottom: solid #2b4450 1px;
+  border-bottom: solid black 1px;
 }
 
 .playlistNav-ul {
@@ -650,7 +650,7 @@ table{
   margin: 0;
   padding: 0px;
   overflow: hidden;
-  background-color: #2b4450;
+  background-color: black;
   position: fixed;
   top: 0px;
   width: 100%;
