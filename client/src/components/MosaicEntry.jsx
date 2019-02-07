@@ -1,23 +1,4 @@
 import React from 'react';
-// import { connect } from 'react-redux';
-
-// import { setCurrentlySelectedPlaylist } from '../redux/actions.js'
-
-// const mapStateToProps = (state) => {
-//   return {
-//     currentlySelectedPlaylist: state.currentlySelectedPlaylist,
-//     userPlaylists: state.userPlaylists,
-//     dropdownMenuOpen: state.dropdownMenuOpen,
-//   }
-// }
-
-// const mapDispatchToProps = (dispatch, ownProps) => {
-//   return {
-//     toggleDropdownMenu: () => dispatch(toggleDropdownMenu()),
-//     closeDropdownMenu: () => dispatch(closeDropdownMenu()),
-//     setCurrentlySelectedPlaylist: () => dispatch(setCurrentlySelectedPlaylist(ownProps.albumEntry[0].album)),
-//   };
-// };
 
 const MosaicEntry = (props) => {
   // Note that props.albumEntry is an array of tracks with same album
@@ -41,7 +22,5 @@ const MosaicEntry = (props) => {
 
   )
 }
-
-// const MosaicEntry = connect(mapStateToProps, mapDispatchToProps)(ConnectedMosaicEntry);
 
 export default MosaicEntry;
